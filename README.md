@@ -199,9 +199,8 @@ src/
 
 # 🔗 Resources
 
-NestJS Guards Documentation
-NestJS Custom Decorators
-JWT Authentication in NestJS
+- [NestJS Guards Documentation](https://docs.nestjs.com/guards)
+- [NestJS Custom Decorators](https://docs.nestjs.com/custom-decorators)
 
 # 🛠 Next Steps
 
