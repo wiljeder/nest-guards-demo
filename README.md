@@ -1,99 +1,213 @@
+# **NestJS Guards with Custom Decorators**
+
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+  <a href="https://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="200" alt="NestJS Logo" /></a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+📌 **Read the Full Article Here:** [Link to Article](https://wiljeder.hashnode.dev/leveraging-nestjs-guards)
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## **📌 Overview**
 
-## Description
+This project demonstrates how to use **NestJS Guards with Custom Decorators** for:
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- ✅ **JWT Authentication** (Validates token & injects user into request)
+- ✅ **Role-Based Access Control (RBAC)** (Supports hierarchy & strict matching)
+- ✅ **Rate Limiting** (Uses a sliding window algorithm based on user plans)
 
-## Project setup
+These guards make authorization **modular, reusable, and production-ready**.
+
+## **🛠 Installation & Setup**
+
+### **1️⃣ Clone the Repository**
 
 ```bash
-$ npm install
+git clone https://github.com/wiljeder/nest-guards-demo.git
+cd nest-guards-demo
 ```
 
-## Compile and run the project
+### 2️⃣ Install Dependencies
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install
 ```
 
-## Run tests
+### 3️⃣ Set Up Environment Variables
+
+Create a .env file in the root directory:
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+JWT_SECRET=your-secret-key
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### 4️⃣ Start the Server
 
 ```bash
-$ npm install -g mau
-$ mau deploy
+npm run start
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+Server will run on http://localhost:3000 🚀
 
-## Resources
+## 🛡 Guards & Decorators Explained
 
-Check out a few resources that may come in handy when working with NestJS:
+### 1️⃣ JWT Authentication Guard
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+- Validates JWT tokens using ConfigService.JWT_SECRET.
+- Injects user data into request.user for later use.
+- 📌 Decorator: No decorator needed. Runs automatically.
 
-## Support
+```typescript
+@UseGuards(JWTAuthGuard)
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### 2️⃣ Role-Based Access Control (RBAC)
 
-## Stay in touch
+- Restricts access based on user roles.
+- Supports role hierarchy (e.g., admin can access manager routes).
+- Supports strict role matching (only exact roles allowed).
+- 📌 Decorator: @Roles(['role'], strict?)
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```typescript
+@UseGuards(JWTAuthGuard, RolesGuard)
+@Roles(['manager']) // Admin also allowed due to hierarchy
+getManagerDashboard() { ... }
 
-## License
+@UseGuards(JWTAuthGuard, RolesGuard)
+@Roles(['manager'], true) // Only managers allowed
+getStrictManagerSettings() { ... }
+```
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+### 3️⃣ Rate Limiting Guard
+
+- Uses a sliding window algorithm for fair rate limiting.
+- Limits requests per minute based on user plan.
+- Anonymous users have a limit of 5 requests/min.
+- 📌 No decorator needed → Runs automatically.
+
+```typescript
+@UseGuards(JWTAuthGuard, RateLimitGuard)
+checkUsage() { ... }
+```
+
+## 🛠 Testing the API
+
+### 1️⃣ Generate a JWT Token for Testing
+
+Run the following in a Node.js environment:
+
+```javascript
+const jwt = require('jsonwebtoken');
+
+const proAdminToken = jwt.sign(
+  { id: '123', role: 'admin', plan: 'pro' },
+  'your-secret-key',
+  { expiresIn: '1h' },
+);
+
+const freeMemberToken = jwt.sign(
+  { id: '123', role: 'member', plan: 'free' },
+  'your-secret-key',
+  { expiresIn: '1h' },
+);
+
+console.log({
+  proAdminToken,
+  freeMemberToken,
+});
+```
+
+Copy the token and use it in API requests.
+
+### 2️⃣ Test JWT Guard
+
+#### ✅ Allowed (any of the generated tokens)
+
+```bash
+curl -H "Authorization: Bearer <your-token>" http://localhost:3000/user
+```
+
+This will return the following object:
+
+```json
+{
+  "message": "User profile data",
+  "user": {...}
+}
+```
+
+#### ❌ Forbidden (Member or Unauthorized)
+
+```bash
+curl -H "Authorization: Bearer abcdef" http://localhost:3000/user
+```
+
+You’ll get:
+
+```json
+{
+  "message": "Invalid token",
+  "error": "Unauthorized",
+  "statusCode": 401
+}
+```
+
+### 3️⃣ Test Role-Based Access
+
+#### ✅ Allowed (Admin or Manager)
+
+```bash
+curl -H "Authorization: Bearer <your-token>" http://localhost:3000/admin/dashboard
+```
+
+#### ❌ Forbidden (Member or Unauthorized)
+
+```bash
+curl -H "Authorization: Bearer <token-with-member-role>" http://localhost:3000/admin/settings
+```
+
+### 4️⃣ Test Rate Limiting
+
+> Tip: you can use postman or insomnia to automate sending a number of requests
+
+Run multiple times within a minute:
+
+```bash
+curl -H "Authorization: Bearer <your-token>" http://localhost:3000/usage
+```
+
+After exceeding the limit, you’ll get:
+
+```json
+{
+  "statusCode": 429,
+  "message": "Rate limit exceeded. Try again in 58s"
+}
+```
+
+# 🔧 Project Structure
+
+```bash
+src/
+│── user/                # User module (JWT testing)
+│── admin/               # Admin module (RBAC testing)
+│── usage/               # Usage module (Rate limiting testing)
+│── decorators/          # Custom decorators
+│── guards/              # Custom guards (JWT, RBAC, RateLimit)
+│── types/express.d.ts   # Extends Express Request with `user`
+│── main.ts              # Entry point
+│── app.module.ts        # App module with global config
+```
+
+# 🔗 Resources
+
+NestJS Guards Documentation
+NestJS Custom Decorators
+JWT Authentication in NestJS
+
+# 🛠 Next Steps
+
+### 🚀 Want to scale this further?
+
+- Implement Redis-backed Rate Limiting for distributed environments.
+- Add Permission-Based Access Control (PBAC) for fine-grained rules.
+- Integrate WebSockets Guards for real-time app security.
+- Contributions & suggestions are welcome! 🤝
